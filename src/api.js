@@ -1,5 +1,6 @@
 const express = require('express');
 const usersRoutes = require('./routers/usersRoutes');
+const authRoute = require('./routers/authRoute');
 
 // ...
 
@@ -9,7 +10,8 @@ app.use(express.json());
 
 // ...
 
-app.use('/', usersRoutes);
+app.use('/login', authRoute);
+app.use('/users', usersRoutes);
 
 app.use((err, _req, res, _next) => {
   const { name, message } = err;
@@ -23,6 +25,9 @@ app.use((err, _req, res, _next) => {
     case 'UnprocessableError':
       res.status(422).json({ message });
       break;
+      case 'UnauthorizedError':
+        res.status(401).json({ message });
+        break;
     default:
       console.warn(err); res.sendStatus(500);
       break;
