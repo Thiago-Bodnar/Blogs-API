@@ -4,8 +4,10 @@ const ValidationError = require('../errors/ValidationError');
 
 const authService = {
 
-  validateBody({ email, password }) {
-    if (!email || !password) throw new ValidationError('Some required fields are missing');
+  validateBody(body) {
+    if (!body.email || !body.password) { 
+      throw new ValidationError('Some required fields are missing'); 
+    }
   },
 
   async login(body) {

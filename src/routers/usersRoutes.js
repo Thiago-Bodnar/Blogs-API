@@ -6,7 +6,7 @@ const usersController = require('../controllers/userController');
 const usersRouter = Router();
 
 // router.get('/', asyncHandler(usersController.list));
-usersRouter.post('/login', asyncHandler(usersController.create));
+usersRouter.post('/', asyncHandler(usersController.create));
 // router.get('/:id', usersController.findById);
 
 module.exports = usersRouter;
