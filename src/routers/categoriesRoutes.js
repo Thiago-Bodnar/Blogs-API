@@ -8,5 +8,6 @@ const categoriesRoutes = Router();
 categoriesRoutes.use(authController.validateToken);
 
 categoriesRoutes.post('/', asyncHandler(categoryController.create));
+categoriesRoutes.get('/', asyncHandler(categoryController.list));
 
 module.exports = categoriesRoutes;

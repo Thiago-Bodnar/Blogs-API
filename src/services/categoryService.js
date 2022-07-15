@@ -12,6 +12,12 @@ const categoryService = {
 
     return newCategory;
   },
+
+  async list() {
+    const categories = await db.Category.findAll();
+
+    return categories;
+  },
 };
 
 module.exports = categoryService;
