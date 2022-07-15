@@ -13,6 +13,14 @@ const userController = {
 
     res.status(200).json(users);
   },
+
+  async get(req, res) {
+    const { id } = req.params;
+
+    const user = await userService.get(id);
+
+    res.status(200).json(user);
+  },
 };
 
 module.exports = userController;

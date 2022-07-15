@@ -11,6 +11,6 @@ usersRouter.post('/', asyncHandler(usersController.create));
 usersRouter.use(authController.validateToken);
 
 usersRouter.get('/', asyncHandler(usersController.list));
-// router.get('/:id', usersController.findById);
+usersRouter.get('/:id', asyncHandler(usersController.get));
 
 module.exports = usersRouter;
