@@ -12,6 +12,13 @@ const createCategory = (sequelize, DataTypes) => {
     tableName: 'Categories',
   });
 
+  Category.associate = (models) => {
+    Category.hasOne(models.PostCategory, {
+      foreignKey: 'categoryId',
+      as: 'categories',
+    });
+  };
+
   return Category;
 };
 
