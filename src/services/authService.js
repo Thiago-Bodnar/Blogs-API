@@ -21,8 +21,6 @@ const authService = {
 
     const token = jwtService.createToken(userWithoutPassword);
 
-    if (!token) throw new ValidationError('Token not found');
-
     return { token };
   },
 };

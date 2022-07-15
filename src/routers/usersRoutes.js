@@ -1,12 +1,16 @@
 const { Router } = require('express');
 const asyncHandler = require('express-async-handler');
+const authController = require('../controllers/authController');
 
 const usersController = require('../controllers/userController');
 
 const usersRouter = Router();
 
-// router.get('/', asyncHandler(usersController.list));
 usersRouter.post('/', asyncHandler(usersController.create));
+
+usersRouter.use(authController.validateToken);
+
+usersRouter.get('/', asyncHandler(usersController.list));
 // router.get('/:id', usersController.findById);
 
 module.exports = usersRouter;
