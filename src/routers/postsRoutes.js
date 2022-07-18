@@ -9,5 +9,6 @@ postsRouter.use(authController.validateToken);
 
 postsRouter.post('/', asyncHandler(postsController.create));
 postsRouter.get('/', asyncHandler(postsController.list));
+postsRouter.get('/:id', asyncHandler(postsController.get));
 
 module.exports = postsRouter;

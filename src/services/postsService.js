@@ -1,6 +1,7 @@
 const db = require('../database/models');
 const categoryService = require('./categoryService');
 const ValidationError = require('../errors/ValidationError');
+const NotFoundError = require('../errors/NotFoundError');
 
 const join = [
   { model: db.User, as: 'user', attributes: { exclude: ['password'] } },
@@ -43,6 +44,13 @@ const postsService = {
     const posts = await db.BlogPost.findAll({ include: join });
 
     return posts;
+  },
+
+  async get(id) {
+    const post = await db.BlogPost.findByPk(id, { include: join });
+
+    if (!post) throw new NotFoundError('Post does not exist');
+    return post;
   },
 };
 
