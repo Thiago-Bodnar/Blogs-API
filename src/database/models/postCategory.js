@@ -3,10 +3,14 @@ const createPostCategory = (sequelize, DataTypes) => {
     postId: {
       type: DataTypes.INTEGER,
       primaryKey: true,
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE',
     },
     categoryId: {
       type: DataTypes.INTEGER,
       primaryKey: true,
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE',
     },
   }, {
     timestamps: false,
@@ -24,8 +28,8 @@ const createPostCategory = (sequelize, DataTypes) => {
     models.BlogPost.belongsToMany(models.Category, {
       as: 'Categories',
       through: PostCategory,
-      foreignKey: 'categoryId',
-      otherKey: 'postId',
+      foreignKey: 'postId',
+      otherKey: 'categoryId',
     });
   };
 

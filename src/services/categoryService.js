@@ -18,6 +18,12 @@ const categoryService = {
 
     return categories;
   },
+
+  async getByIds(ids) {
+    const categoryIds = await db.Category.findAll({ where: { id: ids } });
+
+    return categoryIds;
+  },
 };
 
 module.exports = categoryService;

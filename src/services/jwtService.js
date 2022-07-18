@@ -8,6 +8,11 @@ const jwtService = {
     return token;
   },
 
+  getUserId(token) {
+    const { data } = jwt.decode(token);
+    return data.id;
+  },
+
   validateToken(token) {
     try {
       if (!token) throw new UnauthorizedError('Token not found');
