@@ -9,12 +9,22 @@ const join = [
 ];
 
 const postsService = {
-  validateBody(body) {
+  validateBodyAdd(body) {
     const { title, content, categoryIds } = body;
 
     if (!title || !content || !categoryIds) { 
       throw new ValidationError('Some required fields are missing'); 
     }
+    return body;
+  },
+
+  validateBodyEdit(body) {
+    const { title, content } = body;
+
+    if (!title || !content) { 
+      throw new ValidationError('Some required fields are missing'); 
+    }
+    return body;
   },
 
   async create(body, userId) {
@@ -51,6 +61,16 @@ const postsService = {
 
     if (!post) throw new NotFoundError('Post does not exist');
     return post;
+  },
+
+  async edit(id, body) {
+    const edited = await db.BlogPost.update(body, { where: { id } });
+
+    if (!edited) throw new NotFoundError('Post does not exist');
+
+    const editedPost = await this.get(id);
+
+    return editedPost;
   },
 };
 

@@ -1,6 +1,7 @@
 const db = require('../database/models');
 const jwtService = require('./jwtService');
 const ValidationError = require('../errors/ValidationError');
+const UnauthorizedError = require('../errors/UnauthorizedError');
 
 const authService = {
 
@@ -22,6 +23,10 @@ const authService = {
     const token = jwtService.createToken(userWithoutPassword);
 
     return { token };
+  },
+
+  validatePostOwner(postId, userId) {
+    if (postId !== userId) throw new UnauthorizedError('Unauthorized user');
   },
 };
 

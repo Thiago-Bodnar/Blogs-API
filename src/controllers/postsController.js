@@ -1,12 +1,13 @@
 const postsService = require('../services/postsService');
 const jwtService = require('../services/jwtService');
+const authService = require('../services/authService');
 
 const postsController = {
   async create(req, res) {
     const token = req.headers.authorization;
     const userId = jwtService.getUserId(token);
-    postsService.validateBody(req.body);
-    const newPost = await postsService.create(req.body, userId);
+    const body = postsService.validateBodyAdd(req.body);
+    const newPost = await postsService.create(body, userId);
 
     res.status(201).json(newPost);
   },
@@ -23,6 +24,17 @@ const postsController = {
     const post = await postsService.get(id);
 
     res.status(200).json(post);
+  },
+
+  async edit(req, res) {
+    const { id } = req.params;
+    const body = postsService.validateBodyEdit(req.body);
+    const token = req.headers.authorization;
+    const userId = jwtService.getUserId(token);
+    authService.validatePostOwner(Number(id), userId);
+    const editedPost = await postsService.edit(id, body);
+
+    res.status(200).json(editedPost);
   },
 };
 
