@@ -2,6 +2,11 @@ const db = require('../database/models');
 const categoryService = require('./categoryService');
 const ValidationError = require('../errors/ValidationError');
 
+const join = [
+  { model: db.User, as: 'user', attributes: { exclude: ['password'] } },
+  { model: db.Category, as: 'categories', through: { attributes: [] } },
+];
+
 const postsService = {
   validateBody(body) {
     const { title, content, categoryIds } = body;
@@ -32,6 +37,12 @@ const postsService = {
     }
 
     return post;
+  },
+
+  async list() {
+    const posts = await db.BlogPost.findAll({ include: join });
+
+    return posts;
   },
 };
 

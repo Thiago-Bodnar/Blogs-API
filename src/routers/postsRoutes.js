@@ -8,5 +8,6 @@ const postsRouter = Router();
 postsRouter.use(authController.validateToken);
 
 postsRouter.post('/', asyncHandler(postsController.create));
+postsRouter.get('/', asyncHandler(postsController.list));
 
 module.exports = postsRouter;
