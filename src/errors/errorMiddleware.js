@@ -1,4 +1,4 @@
-function errorMiddleware(err, req, res, _next) {
+function errorMiddleware(err, _req, res, _next) {
   const { name, message } = err;
     switch (name) {
       case 'ValidationError':

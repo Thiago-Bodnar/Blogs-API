@@ -1,8 +1,10 @@
 const { Op } = require('sequelize');
+const Joi = require('joi');
 const db = require('../database/models');
 const categoryService = require('./categoryService');
 const ValidationError = require('../errors/ValidationError');
 const NotFoundError = require('../errors/NotFoundError');
+const { runSchema } = require('./validators');
 
 const join = [
   { model: db.User, as: 'user', attributes: { exclude: ['password'] } },
@@ -10,23 +12,16 @@ const join = [
 ];
 
 const postsService = {
-  validateBodyAdd(body) {
-    const { title, content, categoryIds } = body;
+  validateBodyAdd: runSchema(Joi.object({
+    title: Joi.string().required(),
+    content: Joi.string().required(),
+    categoryIds: Joi.array().items(Joi.number().integer()).required(),
+  })),
 
-    if (!title || !content || !categoryIds) { 
-      throw new ValidationError('Some required fields are missing'); 
-    }
-    return body;
-  },
-
-  validateBodyEdit(body) {
-    const { title, content } = body;
-
-    if (!title || !content) { 
-      throw new ValidationError('Some required fields are missing'); 
-    }
-    return body;
-  },
+  validateBodyEdit: runSchema(Joi.object({
+    title: Joi.string().required(),
+    content: Joi.string().required(),
+  })),
 
   async validateCategories(categoryIds) {
     const existingCategories = await categoryService.getByIds(categoryIds);
