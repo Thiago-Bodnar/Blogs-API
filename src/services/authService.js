@@ -1,5 +1,6 @@
 const db = require('../database/models');
 const jwtService = require('./jwtService');
+const postsService = require('./postsService');
 const ValidationError = require('../errors/ValidationError');
 const UnauthorizedError = require('../errors/UnauthorizedError');
 
@@ -25,8 +26,10 @@ const authService = {
     return { token };
   },
 
-  validatePostOwner(postId, userId) {
-    if (postId !== userId) throw new UnauthorizedError('Unauthorized user');
+  async validatePostOwner(postId, userId) {
+    const postToDelete = await postsService.get(postId);
+
+    if (userId !== postToDelete.userId) throw new UnauthorizedError('Unauthorized user');
   },
 };
 

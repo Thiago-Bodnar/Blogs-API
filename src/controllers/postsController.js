@@ -31,10 +31,20 @@ const postsController = {
     const body = postsService.validateBodyEdit(req.body);
     const token = req.headers.authorization;
     const userId = jwtService.getUserId(token);
-    authService.validatePostOwner(Number(id), userId);
+    await authService.validatePostOwner(id, userId);
     const editedPost = await postsService.edit(id, body);
 
     res.status(200).json(editedPost);
+  },
+
+  async delete(req, res) {
+    const { id } = req.params;
+    const token = req.headers.authorization;
+    const userId = jwtService.getUserId(token);
+    await authService.validatePostOwner(id, userId);
+    await postsService.delete(id);
+
+    res.sendStatus(204);
   },
 };
 

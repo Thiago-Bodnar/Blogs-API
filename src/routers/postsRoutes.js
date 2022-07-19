@@ -11,5 +11,6 @@ postsRouter.post('/', asyncHandler(postsController.create));
 postsRouter.get('/', asyncHandler(postsController.list));
 postsRouter.get('/:id', asyncHandler(postsController.get));
 postsRouter.put('/:id', asyncHandler(postsController.edit));
+postsRouter.delete('/:id', asyncHandler(postsController.delete));
 
 module.exports = postsRouter;

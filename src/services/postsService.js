@@ -27,17 +27,25 @@ const postsService = {
     return body;
   },
 
-  async create(body, userId) {
-    const { categoryIds, ...dataWhithoutIds } = body;
-
+  async validateCategories(categoryIds) {
     const existingCategories = await categoryService.getByIds(categoryIds);
-
     if (categoryIds.length !== existingCategories.length) {
       throw new ValidationError('"categoryIds" not found');
     }
+  }, 
+
+  async create(body, userId) {
+    const { categoryIds, ...dataWhithoutIds } = body;
+
+    await this.validateCategories(categoryIds);
 
     const [post, created] = await db.BlogPost.findOrCreate({
-      where: { ...dataWhithoutIds, userId },
+      where: {
+        ...dataWhithoutIds,
+        published: new Date(),
+        updated: new Date(),
+        userId,
+      },
     });
 
     if (created) {
@@ -64,13 +72,22 @@ const postsService = {
   },
 
   async edit(id, body) {
-    const edited = await db.BlogPost.update(body, { where: { id } });
+    const edited = await db.BlogPost.update({ 
+      ...body, 
+      updated: new Date() }, 
+      { where: { id } });
 
     if (!edited) throw new NotFoundError('Post does not exist');
 
     const editedPost = await this.get(id);
 
     return editedPost;
+  },
+
+  async delete(id) {
+    const deleted = await db.BlogPost.destroy({ where: { id } });
+
+    if (!deleted) throw new NotFoundError('Post does not exist');
   },
 };
 
