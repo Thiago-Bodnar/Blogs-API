@@ -4,7 +4,7 @@ const db = require('../database/models');
 const categoryService = require('./categoryService');
 const ValidationError = require('../errors/ValidationError');
 const NotFoundError = require('../errors/NotFoundError');
-const { runSchema } = require('./validators');
+const { runPostSchema } = require('./validators');
 
 const join = [
   { model: db.User, as: 'user', attributes: { exclude: ['password'] } },
@@ -12,13 +12,13 @@ const join = [
 ];
 
 const postsService = {
-  validateBodyAdd: runSchema(Joi.object({
+  validateBodyAdd: runPostSchema(Joi.object({
     title: Joi.string().required(),
     content: Joi.string().required(),
     categoryIds: Joi.array().items(Joi.number().integer()).required(),
   })),
 
-  validateBodyEdit: runSchema(Joi.object({
+  validateBodyEdit: runPostSchema(Joi.object({
     title: Joi.string().required(),
     content: Joi.string().required(),
   })),

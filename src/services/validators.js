@@ -1,6 +1,6 @@
 const ValidationError = require('../errors/ValidationError');
 
-const runSchema = (schema) => (data) => {
+const runPostSchema = (schema) => (data) => {
   const { error, value } = schema.validate(data);
   if (error) {
     throw new ValidationError('Some required fields are missing');
@@ -8,4 +8,13 @@ const runSchema = (schema) => (data) => {
   return value;
 };
 
-module.exports = { runSchema };
+const runSchema = (schema) => (data) => {
+  const { error, value } = schema.validate(data);
+  if (error) {
+    error.message = error.details[0].message;
+    throw error;
+  }
+  return value;
+};
+
+module.exports = { runPostSchema, runSchema };
