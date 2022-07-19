@@ -7,6 +7,7 @@ const postsRouter = Router();
 
 postsRouter.use(authController.validateToken);
 
+postsRouter.get('/search', asyncHandler(postsController.search));
 postsRouter.post('/', asyncHandler(postsController.create));
 postsRouter.get('/', asyncHandler(postsController.list));
 postsRouter.get('/:id', asyncHandler(postsController.get));

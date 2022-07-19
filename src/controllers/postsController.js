@@ -46,6 +46,13 @@ const postsController = {
 
     res.sendStatus(204);
   },
+
+  async search(req, res) {
+    const { q } = req.query;
+    const posts = await postsService.search(q);
+
+    res.status(200).json(posts);  
+  },
 };
 
 module.exports = postsController;

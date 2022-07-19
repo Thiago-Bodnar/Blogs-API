@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const db = require('../database/models');
 const categoryService = require('./categoryService');
 const ValidationError = require('../errors/ValidationError');
@@ -88,6 +89,25 @@ const postsService = {
     const deleted = await db.BlogPost.destroy({ where: { id } });
 
     if (!deleted) throw new NotFoundError('Post does not exist');
+  },
+
+  async search(query) {
+    if (!query) {
+      const posts = await this.list();
+      return posts;
+    }
+
+    const posts = await db.BlogPost.findAll({
+      include: join,
+      where: {
+        [Op.or]: [
+          { title: { [Op.startsWith]: query } },
+          { content: { [Op.startsWith]: query } },
+        ],
+      },
+    });
+
+    return posts;
   },
 };
 
