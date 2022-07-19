@@ -12,5 +12,6 @@ usersRouter.use(authController.validateToken);
 
 usersRouter.get('/', asyncHandler(usersController.list));
 usersRouter.get('/:id', asyncHandler(usersController.get));
+usersRouter.delete('/me', asyncHandler(usersController.deleteMe));
 
 module.exports = usersRouter;

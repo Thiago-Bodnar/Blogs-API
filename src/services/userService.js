@@ -40,6 +40,12 @@ const usersService = {
     return user;
   },
 
+  async delete(id) {
+    const deleted = await db.User.destroy({ where: { id } });
+
+    if (!deleted) throw new NotFoundError('Post does not exist');
+  },
+
 };
 
 module.exports = usersService;
